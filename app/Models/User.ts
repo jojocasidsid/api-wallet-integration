@@ -6,9 +6,11 @@ import {
   BaseModel,
   hasOne,
   HasOne,
+  hasMany,
+  HasMany,
 } from "@ioc:Adonis/Lucid/Orm";
 import Wallet from "App/Models/Wallet";
-
+import ApiToken from "App/Models/ApiToken";
 export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: number;
@@ -39,5 +41,8 @@ export default class User extends BaseModel {
   }
 
   @hasOne(() => Wallet)
-  public profile: HasOne<typeof Wallet>;
+  public WalletRelationship: HasOne<typeof Wallet>;
+
+  @hasMany(() => ApiToken)
+  public APITokenRelationship: HasMany<typeof ApiToken>;
 }
