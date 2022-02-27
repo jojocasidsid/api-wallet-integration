@@ -81,7 +81,7 @@ export default class WalletsController {
     return response.badRequest("Invalid Credentials!");
   }
 
-  public async retrieve({ auth }: HttpContextContract) {
+  public async retrieve({ auth, response }: HttpContextContract) {
     const user = await auth.use("api").authenticate();
     const { id } = user;
     const userWallet = await Wallet.findBy("user_id", id);
@@ -111,6 +111,6 @@ export default class WalletsController {
       }
     }
 
-    return "Invalid Credentials!";
+    return response.badRequest("Invalid Credentials!");
   }
 }
