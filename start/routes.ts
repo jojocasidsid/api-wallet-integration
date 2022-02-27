@@ -23,7 +23,11 @@ import Route from "@ioc:Adonis/Core/Route";
 Route.get("/", async () => {
   return { hello: "world" };
 });
+//User routes
+Route.post("/register", "UsersController.register");
+Route.post("/login", "UsersController.login");
+Route.put("/logout", "UsersController.logout");
 
-Route.get("/sign-up", "UsersController.register");
-Route.get("/login", "UsersController.login");
-Route.get("/logout", "UsersController.logout");
+//Wallet routes
+Route.post("/store", "WalletsController.store");
+Route.get("/retrieve", "WalletsController.retrieve");
