@@ -16,7 +16,6 @@ export default class ApiTokens extends BaseSchema {
       table.string("type").notNullable();
 
       table.string("token", 64).notNullable().unique();
-      table.boolean("is_revoked").notNullable().defaultTo(false);
       /**
        * Uses timestampz for PostgreSQL and DATETIME2 for MSSQL
        */
