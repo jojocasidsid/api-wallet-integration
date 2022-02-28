@@ -35,8 +35,15 @@ export default class WalletsController {
     },
   ];
 
+  badRequestString = "Invalid Credentials!";
+
+  formatBigNumber(value: string | number, unit = "ether") {
+    const bn = ethers.BigNumber.from(value);
+    return ethers.utils.formatUnits(bn, unit);
+  }
+
   public async store({ request, auth, response }: HttpContextContract) {
-    const number = request.input("number");
+    const data = request.input("data");
 
     const user = await auth.use("api").authenticate();
     const { id } = user;
@@ -66,7 +73,7 @@ export default class WalletsController {
 
         if (ethers.utils.formatUnits(walletBalance)) {
           const transaction = await contract.store(
-            ethers.utils.parseEther(number)
+            ethers.utils.parseEther(data)
           );
 
           await transaction.wait();
@@ -75,10 +82,10 @@ export default class WalletsController {
 
         return response.badRequest("No funds!");
       }
-      return response.badRequest("Invalid Credentials!");
+      return response.badRequest(this.badRequestString);
     }
 
-    return response.badRequest("Invalid Credentials!");
+    return response.badRequest(this.badRequestString);
   }
 
   public async retrieve({ auth, response }: HttpContextContract) {
@@ -105,12 +112,10 @@ export default class WalletsController {
         );
 
         const res = await contract.retrieve();
-        const convertRes = ethers.BigNumber.from(res);
-
-        return ethers.utils.formatUnits(convertRes);
+        return this.formatBigNumber(res);
       }
     }
 
-    return response.badRequest("Invalid Credentials!");
+    return response.badRequest(this.badRequestString);
   }
 }

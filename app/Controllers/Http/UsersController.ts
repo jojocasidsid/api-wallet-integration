@@ -14,6 +14,8 @@ import Wallet from "App/Models/Wallet";
 import ApiToken from "App/Models/ApiToken";
 
 export default class UsersController {
+  badRequestString = "Invalid Credentials!";
+
   public async register({ request }: HttpContextContract) {
     //create user
     const validations = schema.create({
@@ -90,9 +92,9 @@ export default class UsersController {
           return token.toJSON();
         }
       }
-      return response.badRequest("Invalid credentials");
+      return response.badRequest(this.badRequestString);
     } catch {
-      return response.badRequest("Invalid credentials");
+      return response.badRequest(this.badRequestString);
     }
   }
 
@@ -101,7 +103,7 @@ export default class UsersController {
       await auth.use("api").revoke();
       return response.json("User is logged out");
     } catch (e) {
-      return response.badRequest("Invalid credentials");
+      return response.badRequest(this.badRequestString);
     }
   }
 }
